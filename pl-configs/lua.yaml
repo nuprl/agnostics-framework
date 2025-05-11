@@ -1,0 +1,4 @@
+prompt: Use Lua 5.1, targeting LuaJIT.
+install: apt-get install -y luajit
+filename: snippet.lua
+execute: luajit snippet.lua

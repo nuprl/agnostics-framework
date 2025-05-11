@@ -1,0 +1,7 @@
+{
+    "typeCheckingMode": "off",
+    "reportIncompatibleMethodOverride": "error",
+    "reportPrivateUsage": "error",
+    "reportProtectedUsage": "error",
+    "reportUndefinedVariable": "error"
+}

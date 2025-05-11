@@ -1,0 +1,40 @@
+# This script is intended to be sourced, not executed.
+
+# Get script path (only used if environment is relocatable).
+# START: code yanked from Python $venv/bin/activate
+if [ -n "${BASH_VERSION:+x}" ] ; then
+    script_path="${BASH_SOURCE[0]}"
+    if [ "$script_path" = "$0" ]; then
+        # Only bash has a reasonably robust check for source'dness.
+        echo "You must source this script: \$ source $0" >&2
+        exit 33
+    fi
+elif [ -n "${ZSH_VERSION:+x}" ] ; then
+    script_path="${(%):-%x}"
+elif [ -n "${KSH_VERSION:+x}" ] ; then
+    script_path="${.sh.file}"
+fi
+# END: yanked code
+
+script_dir=$(dirname "$(realpath "$script_path")")
+repo_dir=$(dirname "$script_dir")
+
+venv_dir=$repo_dir/.venv
+if test -d "$venv_dir"
+then
+    source "$venv_dir/bin/activate"
+else
+    echo >&2 "Not activating venv; missing dir: $venv_dir"
+fi
+
+export PYTHONPATH="$PYTHONPATH:$repo_dir/src"
+
+# Set up auxilliary environment variables
+
+# Setting PYTHONUNBUFFERED helps with Ray's output. Without it, text written to standard streams
+# (both stdout and stderr) is heavily delayed and can only show up after everything has finished.
+export PYTHONUNBUFFERED=1
+
+# Disable Typer's "rich" tracebacks, since (1) they don't look good written to files and
+# (2) they show values of local variables, which for us often hold datasets and are huge.
+export _TYPER_STANDARD_TRACEBACK=1

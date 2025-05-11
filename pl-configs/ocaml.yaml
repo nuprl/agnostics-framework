@@ -1,0 +1,21 @@
+prompt: |
+  Use OCaml 5.
+
+  Numbers:   + - * / mod   vs.   +. -. *. /. **    (add dots!)
+  Casts:     float_of_int   int_of_float   int_of_string
+  Mutation:  refs (:= !) or pass new values recursively
+  Strings:   split_on_char, String.get => char, use Printf "%c"
+  Lists:     avoid List.nth; prefer pattern-match / folds / arrays
+container:
+  base-image: "docker.io/ocaml/opam:ubuntu-22.04-ocaml-5.0"
+  type: debian
+install:
+  container-instructions: |
+    RUN opam install base stdio utop
+    ENV OPAM_SWITCH_PREFIX='/home/opam/.opam/5.0'
+    ENV CAML_LD_LIBRARY_PATH='/home/opam/.opam/5.0/lib/stublibs:/home/opam/.opam/5.0/lib/ocaml/stublibs:/home/opam/.opam/5.0/lib/ocaml'
+    ENV OCAML_TOPLEVEL_PATH='/home/opam/.opam/5.0/lib/toplevel'
+    ENV MANPATH=':/home/opam/.opam/5.0/man'
+    ENV PATH='/home/opam/.opam/5.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+filename: snippet.ml
+execute: utop -require base -require stdio snippet.ml

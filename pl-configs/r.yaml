@@ -1,0 +1,15 @@
+install: apt-get install -y r-cran-tidyverse
+filename: snippet.R
+execute: Rscript snippet.R
+prompt: |
+  Use R version 4. Use `readLines(con = file("stdin"))` to read input from stdin. Optionally, use the `n` argument to read the first `n` lines. For example:
+  ```r
+  input <- readLines(con = file("stdin"), n = 1)
+  n <- as.integer(input)
+  cat(n) # print the first line of input
+  ```
+  Also, use `cat` to print output to stdout. For example:
+  ```r
+  cat(n)
+  ```
+  Please do not use `print` to print output.

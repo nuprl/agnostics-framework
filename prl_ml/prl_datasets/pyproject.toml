@@ -1,0 +1,26 @@
+[project]
+name = "prl-datasets"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Arjun Guha", email = "a.guha@northeastern.edu" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.7.0",
+    "numpy>=2",
+    "pyarrow>=21.0.0",
+    "transformers>=4.0.0",
+    "lark>=1.2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4.2"]
+
+[project.scripts]
+prl-datasets = "prl_datasets:main"
+
+[build-system]
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"

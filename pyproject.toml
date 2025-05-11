@@ -1,0 +1,45 @@
+[project]
+name = "agnostics"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "bounded-subprocess==2.3.1",
+    "datasets==3.4.1",
+    "dotenv>=0.9.9",
+    "evalplus>=0.3.1",
+    "ipykernel>=6.29.5",
+    "ipython>=9.2.0",
+    "jaxtyping>=0.3.2",
+    "loguru>=0.7.3",
+    "openai>=1.68.2",
+    "prl-ml",
+    "ray[default]==2.46.0",
+    "regex>=2024.11.6",
+    "transformers>=4.53.0,<4.54.0", # lower bound for SmolLM3, upper bound for vllm
+    "tensorboard>=2.19.0",
+    "torch>=2.6.0",
+    "tree-sitter==0.24.0",
+    "tree-sitter-python==0.23.6",
+    "typeguard>=4.4.2",
+    "typer>=0.15.2",
+    "vllm>=0.10.0,<0.11.0",
+    "wandb>=0.19.11",
+    "abstractions>=0.4.0",
+]
+
+[tool.pyright]
+include = [
+    "src/**/*.py",
+]
+exclude = [
+    "src/evalplusplus/**", # contains ill-typed files copied from evalplus
+]
+
+[tool.uv.sources]
+prl-ml = { path = "prl_ml/prl_ml", editable = true }
+
+[dependency-groups]
+dev = [
+    "ty>=0.0.17",
+]

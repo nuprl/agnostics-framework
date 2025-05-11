@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=64", "wheel", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prl_ml"
+version = "0.1.0"
+description = "A brief description of your project"
+authors = [{name = "Your Name", email = "your.email@example.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "lark",
+    "datasets",
+    "scipy",
+    "torch>=2.7.0",
+    "transformers>=4.53.0",
+    "prl-datasets",
+    "accelerate>=1.12.0",
+]
+
+[tool.uv.sources]
+prl-datasets = { path = "../prl_datasets", editable = true }
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["prl_ml"]
+
+[tool.setuptools_scm]
+root = ".."
+version_file = "prl_ml/_version.py"
+local_scheme = "node-and-timestamp"

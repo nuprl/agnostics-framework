@@ -1,0 +1,6 @@
+prompt: Use Julia 1.11.
+container:
+  base-image: "julia:1.11.3"
+  type: debian
+filename: snippet.jl
+execute: julia snippet.jl

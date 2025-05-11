@@ -1,0 +1,2 @@
+# Copy this file to .env (and remove this line if you like)
+AGNOSTICS_CONTAINER_TOOL= # podman | docker

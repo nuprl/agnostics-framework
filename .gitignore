@@ -1,0 +1,14 @@
+.vscode
+
+__pycache__
+.env
+.venv
+.ruff_cache
+
+datasets/
+archived/
+out
+out-*
+out+*
+
+wandb/

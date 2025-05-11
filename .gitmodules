@@ -1,0 +1,7 @@
+[submodule "MultiPL-E"]
+	path = MultiPL-E
+	url = git@github.com:nuprl/agnostics-MultiPL-E.git
+	branch = main
+[submodule "prl_ml"]
+	path = prl_ml
+	url = git@github.com:nuprl/prl_ml.git
