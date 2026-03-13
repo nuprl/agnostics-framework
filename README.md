@@ -1,4 +1,5 @@
 # Agnostics
+Repository of code developed during the [Agnostics project](https://agnostics.abgru.me).
 
 # Quick start guide
 We recommend using `uv`.
@@ -18,10 +19,10 @@ We recommend always using scripts in `./scripts` to run code from the project,
 as they automatically activate the venv and set recommended environment variables.
 You can run `python` with `./scripts/python`.
 
-# Ag-Codeforces-X
-PL-specialized subsets of Ag-Codeforces-X are generated using code in this repository.
+# Ag-Codeforces-X, Ag-MBPP-X
+PL-specialized subsets of both Ag-Codeforces-X and Ag-MBPP-X are generated using code in this repository.
 
-To generate splits for programming language $lang (e.g., `lang=lua`) run:
+To generate Ag-Codefoces-X splits for programming language $lang (e.g., `lang=lua`), run:
 ```bash
 lang=lua # example
 ./scripts/grpo.sh prepare $lang
@@ -31,7 +32,13 @@ The relevant generated files are
 `./out/grpo/datasets/xl-varprompt-$lang/train.jsonl` (the train split)
 and `./out/grpo/datasets/$lang/test.jsonl` (the test split).
 
-The identifiers for programming languages used in our work are `lua`, `julia`, `r`, `ocaml`, `fortran`.
+To generate Ag-MBPP-X splits, run:
+```bash
+lang=lua # example
+./scripts/grpo_mbpp.sh prepare $lang
+```
+
+The identifiers of programming languages used in our work are `lua`, `julia`, `r`, `ocaml`, `fortran`.
 A following section explains how to add your own language.
 
 # GRPO training
