@@ -1,5 +1,10 @@
 # Agnostics
-Repository of code developed during the [Agnostics project](https://agnostics.abgru.me).
+This codebase allows training and benchmarking a model on coding in nearly any programming language,
+based on a few lines of YAML config per language.
+If you want to know how that works, see the [Agnostics project](https://agnostics.abgru.me) website.
+
+By default, the codebase supports the programming languages used in our work: `lua`, `julia`, `r`, `ocaml`, `fortran`.
+A later section explains how to add support for other languages.
 
 # Quick start guide
 We recommend using `uv`.
@@ -19,8 +24,40 @@ We recommend always using scripts in `./scripts` to run code from the project,
 as they automatically activate the venv and set recommended environment variables.
 You can run `python` with `./scripts/python`.
 
+# Ag-LiveCodeBench-X, benchmarking via APIs
+Ag-LiveCodeBench-X can be used to benchmark a model on coding in programming language X.
+To do so, run:
+```bash
+lang=lua
+# model_ref is the model's name passed via the API
+model_ref=Qwen/Qwen3-4B
+# model_nickname is used to name the output directory
+model_nickname=qwen3-4b
+shared=(
+    --lang $lang
+    --model-nickname qwen3-4b
+    --model-ref qwen3-4b
+    --temperature 0.2
+    --n-samples 20
+    --max-tokens $((1*1024))
+    --output-root-dir out
+)
+
+# Configure the API endpoint via the environment variable.
+# For commercial APIs, also set OPENAI_API_KEY.
+export OPENAI_BASE_URL=http://0.0.0.0:49731/v1
+./scripts/analysis_api_livecodebenchx.sh "${shared[@]}" generate --concurrency 100 --timeout-seconds=60
+./scripts/analysis_api_livecodebenchx.sh "${shared[@]}" verify-from-generate --use-prebuilt-executor-images --timeout-seconds=60
+```
+The pass@1 scores can be displayed with:
+```bash
+# to render results in a table, add pipe: | column -t
+./scripts/agnostics_pass1_tsv.py ./out/analysis-livecodebenchx/*/*/verify/result.jsonl
+```
+
 # Ag-Codeforces-X, Ag-MBPP-X
-PL-specialized subsets of both Ag-Codeforces-X and Ag-MBPP-X are generated using code in this repository.
+The Ag-Codeforces-X and Ag-MBPP-X datasets allow training a model to code in programming language X.
+PL-specialized subsets of both datasets are dynamically generated.
 
 To generate Ag-Codefoces-X splits for programming language $lang (e.g., `lang=lua`), run:
 ```bash
@@ -38,11 +75,8 @@ lang=lua # example
 ./scripts/grpo_mbpp.sh prepare $lang
 ```
 
-The identifiers of programming languages used in our work are `lua`, `julia`, `r`, `ocaml`, `fortran`.
-A following section explains how to add your own language.
-
 # GRPO training
-To train Qwen 3 4B to code in programming language `$lang`, run:
+To train Qwen 3 4B to code in programming language `$lang` using Ag-Codeforces-X, run:
 ```bash
 lang=lua # example
 ./scripts/grpo.sh train \
@@ -66,8 +100,11 @@ To see the available options, run `./scripts/grpo.sh train --help`.
 When using a custom programming language, the last flag (`--use-prebuilt-executor-images`) must not be set.
 It controls using a prebuilt executor image available in our repository.
 
+A similar script, `./scripts/grpo_mbpp.sh`, allows using Ag-MBPP-X to train a model.
+
 # Analyzing trained models
-To analyze a trained model on Ag-LiveCodeBench-X, run:
+There is an additional convenience script which allows benchmarking a trained model on Ag-LiveCodeBench-X 
+using `vllm` via the Python library, without starting a standalone server:
 ```bash
 # The snippet uses Bash features.
 lang=lua # example
@@ -88,7 +125,7 @@ shared=(
 ./scripts/analysis_model_livecodebenchx.sh "${shared[@]}" generate --batch-size 10000 # high --batch-size is recommended, it controls how many requests vllm receives at once,
 ./scripts/analysis_model_livecodebenchx.sh "${shared[@]}" verify-from-generate --use-prebuilt-executor-images --timeout-seconds=60
 ```
-The pass@1 scores can be displayed with:
+As before, the pass@1 scores can be displayed with:
 ```bash
 # to render results in a table, add pipe: | column -t
 ./scripts/agnostics_pass1_tsv.py ./out/analysis-livecodebenchx/*/*/verify/result.jsonl
